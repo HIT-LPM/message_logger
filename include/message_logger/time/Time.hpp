@@ -33,26 +33,28 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 /*!
-* @file     Time.hpp
-* @author   Christian Gehring
-* @date     Dec, 2014
-* @brief
-*/
+ * @file     Time.hpp
+ * @author   Christian Gehring
+ * @date     Dec, 2014
+ * @brief
+ */
 #pragma once
 
 #include <cstdint>
+#include <iomanip>  // std::setw
 #include <ostream>
-#include <iomanip> // std::setw
 
 namespace message_logger {
 namespace time {
 
-
-class Time
-{
+class Time {
  public:
-  Time() {}
-  virtual ~Time() {}
+  Time() = default;
+  virtual ~Time() = default;
+  Time(const Time&) = default;
+  Time(Time&&) noexcept = default;
+  Time& operator=(const Time&) = default;
+  Time& operator=(Time&&) noexcept = default;
   virtual Time& fromSec(double t) = 0;
   virtual Time& fromNSec(uint64_t t) = 0;
   virtual double toSec() const = 0;
@@ -61,7 +63,6 @@ class Time
   friend std::ostream& operator<<(std::ostream& out, const Time& rhs);
   virtual Time& setNow() = 0;
 };
-
 
 } /* namespace time */
 } /* namespace message_logger */

@@ -66,11 +66,11 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 /*!
-* @file     TimeStd.hpp
-* @author   Christian Gehring
-* @date     Dec, 2014
-* @brief
-*/
+ * @file     TimeStd.hpp
+ * @author   Christian Gehring
+ * @date     Dec, 2014
+ * @brief
+ */
 #pragma once
 
 #include <cstdint>
@@ -79,43 +79,40 @@
 namespace message_logger {
 namespace time {
 
-class TimeStd: virtual public Time
-{
+inline void normalizeSecNSec(uint64_t& sec, uint64_t& nsec);
+inline void normalizeSecNSec(uint32_t& sec, uint32_t& nsec);
+inline void normalizeSecNSecUnsigned(int64_t& sec, int64_t& nsec);
+
+class TimeStd : virtual public Time {
  public:
   TimeStd();
   TimeStd(uint32_t sec, uint32_t nsec);
-  TimeStd(const Time& time);
-  explicit TimeStd(uint64_t t);
-  explicit TimeStd(double t);
-  virtual ~TimeStd();
+  explicit TimeStd(const Time& time);
+  explicit TimeStd(uint64_t nsec);
+  explicit TimeStd(double sec);
   TimeStd& from(uint32_t sec, uint32_t nsec);
-  TimeStd& fromSec(double t);
-  TimeStd& fromNSec(uint64_t t);
-  virtual double toSec() const;
-  virtual uint32_t getSec() const;
-  virtual uint32_t getNSec() const;
-  TimeStd& operator=(const Time& time);
+  TimeStd& fromSec(double t) override;
+  TimeStd& fromNSec(uint64_t t) override;
+  double toSec() const override;
+  uint32_t getSec() const override;
+  uint32_t getNSec() const override;
 
-  TimeStd& operator=(const TimeStd& rhs);
+  TimeStd& operator=(const Time& time);
   TimeStd operator+(const TimeStd& rhs) const;
-  TimeStd operator-(const TimeStd &rhs) const;
-  TimeStd  operator-() const;
+  TimeStd operator-(const TimeStd& rhs) const;
+  TimeStd operator-() const;
   TimeStd& operator+=(const TimeStd& rhs);
-  TimeStd& operator-=(const TimeStd &rhs);
+  TimeStd& operator-=(const TimeStd& rhs);
 
   TimeStd operator+(double t) const;
   TimeStd& operator+=(double t);
 
-  virtual Time& setNow();
+  Time& setNow() override;
   static TimeStd now();
 
-
   friend std::ostream& operator<<(std::ostream& out, const TimeStd& rhs);
- protected:
-  inline void normalizeSecNSec(uint64_t& sec, uint64_t& nsec) const;
-  inline void normalizeSecNSec(uint32_t& sec, uint32_t& nsec) const;
-  inline void normalizeSecNSecUnsigned(int64_t& sec, int64_t& nsec) const;
- protected:
+
+ private:
   uint32_t sec_;
   uint32_t nsec_;
 };
